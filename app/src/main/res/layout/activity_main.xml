@@ -1,0 +1,108 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="6">
+
+            <!-- 네이버 지도 -->
+            <com.naver.maps.map.MapView
+                android:id="@+id/map_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </com.naver.maps.map.MapView>
+
+            <!-- 나침반 뷰 추가 -->
+            <com.naver.maps.map.widget.CompassView
+                android:id="@+id/compass_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|left"
+                android:padding="10dp">
+            </com.naver.maps.map.widget.CompassView>
+
+            <!-- 검색바를 지도 위에 겹쳐서 배치 -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <EditText
+                    android:id="@+id/address_input"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:drawable/edit_text"
+                    android:hint="주소를 입력하세요"
+                    android:padding="8dp" />
+
+                <Button
+                    android:id="@+id/search_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="검색" />
+            </LinearLayout>
+
+            <!-- 드롭다운 버튼 추가 -->
+            <Spinner
+                android:id="@+id/map_type_spinner"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center|end"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/settings_icon"
+                android:padding="8dp" />
+
+        </FrameLayout>
+
+        <!-- 하단 버튼 레이아웃 -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="16dp">
+
+            <!-- 가운데 큰 버튼 -->
+            <ImageButton
+                android:id="@+id/search_btn"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center|top"
+                android:background="@drawable/search_icon" />
+
+            <!-- 왼쪽 작은 버튼 -->
+            <ImageButton
+                android:id="@+id/favorite_btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|start"
+                android:background="@drawable/favorite_icon"
+                android:layout_marginStart="50dp"
+                android:layout_marginBottom="30dp" />
+
+            <!-- 오른쪽 작은 버튼 -->
+            <ImageButton
+                android:id="@+id/profile_btn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="bottom|end"
+                android:background="@drawable/myprofile_icon"
+                android:layout_marginEnd="50dp"
+                android:layout_marginBottom="30dp" />
+        </FrameLayout>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
