@@ -22,7 +22,9 @@ import com.naver.maps.map.MapView;
 import com.naver.maps.map.NaverMap;
 import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.UiSettings;
+import com.naver.maps.map.overlay.LocationOverlay;
 import com.naver.maps.map.overlay.Marker;
+import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.widget.CompassView;
 
 import org.json.JSONArray;
@@ -69,12 +71,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (naverMap != null) {
                     switch (position) {
                         case 0:
-                            naverMap.setMapType(NaverMap.MapType.Navi); //일반지도
+                            naverMap.setMapType(NaverMap.MapType.Basic); // 일반지도
                             break;
                         case 1:
-                            naverMap.setMapType(NaverMap.MapType.NaviHybrid); //하이브리드지도
+                            naverMap.setMapType(NaverMap.MapType.Hybrid); // 하이브리드지도
                             break;
-
                     }
                 }
             }
@@ -85,21 +86,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-
+        // 주소 검색 버튼 클릭 리스너
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String address = addressInput.getText().toString();
                 if (!address.isEmpty()) {
                     // 주소를 이용해 좌표 검색
-                    new GeocodingTask().execute(address);
+                    new NaverGeocodingTask().execute(address);
                 } else {
                     Toast.makeText(MainActivity.this, "주소를 입력하세요", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
 
         ImageButton favoriteBtn = findViewById(R.id.favorite_btn);
         favoriteBtn.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-
         ImageButton profile_btn = findViewById(R.id.profile_btn);
         profile_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,41 +117,45 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
-
-
-
-
     }
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
 
-        naverMap.setLocationTrackingMode(LocationTrackingMode.Face); // 지도에 내 위치 표시
-        naverMap.setMapType(NaverMap.MapType.Navi);
+        LocationOverlay locationOverlay = naverMap.getLocationOverlay();
+        locationOverlay.setVisible(true);
+        naverMap.setLocationTrackingMode(LocationTrackingMode.Face);// 지도에 내 위치 표시
+        naverMap.setMapType(NaverMap.MapType.Basic);
+
+
+
+
 
         UiSettings uiSettings = naverMap.getUiSettings(); // 인터페이스 옵션 모음
         uiSettings.setCompassEnabled(false); // 기본 나침반 비활성화
         uiSettings.setZoomControlEnabled(false); // 줌 컨트롤 버튼 비활성화
         uiSettings.setLocationButtonEnabled(true); // 내 위치로 이동 버튼
 
-
         // 나침반 뷰와 지도 연결
         compassView.setMap(naverMap);
     }
 
-    // Geocoding API 호출
-    private class GeocodingTask extends AsyncTask<String, Void, LatLng> {
+    // Naver Geocoding API 호출
+    private class NaverGeocodingTask extends AsyncTask<String, Void, LatLng> {
         @Override
         protected LatLng doInBackground(String... strings) {
             String address = strings[0];
-            String apiKey = "AIzaSyA-Jhr6zu8fNMtG8miSBugIKmtx7yCmmGE";  // 구글 Geocoding API 키
-            String apiUrl = "https://maps.googleapis.com/maps/api/geocode/json?address=" + address + "&key=" + apiKey;
+            String clientId = "pa593595je"; // 네이버 클라이언트 ID
+            String clientSecret = "GAUZAT2h82xh7TGb6lLXkm4yvblSj9xhaBfC63Dn"; // 네이버 클라이언트 시크릿
+            String apiUrl = "https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query=" + address;
 
             try {
                 URL url = new URL(apiUrl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("GET");
+                connection.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
+                connection.setRequestProperty("X-NCP-APIGW-API-KEY", clientSecret);
 
                 BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 StringBuilder response = new StringBuilder();
@@ -167,12 +169,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 // JSON 데이터 파싱
                 JSONObject jsonObject = new JSONObject(response.toString());
-                JSONArray results = jsonObject.getJSONArray("results");
+                JSONArray addresses = jsonObject.getJSONArray("addresses");
 
-                if (results.length() > 0) {
-                    JSONObject location = results.getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
-                    double lat = location.getDouble("lat");
-                    double lng = location.getDouble("lng");
+                if (addresses.length() > 0) {
+                    JSONObject location = addresses.getJSONObject(0);
+                    double lat = location.getDouble("y");
+                    double lng = location.getDouble("x");
 
                     return new LatLng(lat, lng);
                 }

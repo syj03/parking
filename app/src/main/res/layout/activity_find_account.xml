@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center"
+    android:background="#FFFFFF">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/find_account_title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp"
+        android:textColor="#000000" />
+
+    <EditText
+        android:id="@+id/etFindName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="이름 입력"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp" />
+
+    <EditText
+        android:id="@+id/etFindBirthdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="생년월일 입력 (yyyymmdd)"
+        android:inputType="number"
+        android:maxLength="8"
+        android:layout_marginBottom="24dp"
+        android:padding="12dp" />
+
+    <Button
+        android:id="@+id/btnFindAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/find_button"
+        android:textSize="16sp"
+        android:padding="12dp"
+        android:backgroundTint="#6200EE"
+        android:textColor="#FFFFFF" />
+</LinearLayout>
