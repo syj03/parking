@@ -16,14 +16,14 @@
             android:layout_weight="6">
 
             <!-- 네이버 지도 -->
+
+            <!-- 나침반 뷰 추가 -->
+
             <com.naver.maps.map.MapView
                 android:id="@+id/map_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"></com.naver.maps.map.MapView>
 
-            </com.naver.maps.map.MapView>
-
-            <!-- 나침반 뷰 추가 -->
             <com.naver.maps.map.widget.CompassView
                 android:id="@+id/compass_view"
                 android:layout_width="wrap_content"
@@ -54,6 +54,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:padding="8dp"
+                    android:backgroundTint="#3F51B5"
+                    android:textColor="#FFFFFF"
                     android:text="검색" />
             </LinearLayout>
 
@@ -64,45 +66,52 @@
                 android:layout_height="35dp"
                 android:layout_gravity="center|end"
                 android:layout_marginEnd="16dp"
-                android:background="@drawable/settings_icon"
+                android:background="@drawable/setting_icon"
                 android:padding="8dp" />
-
         </FrameLayout>
 
         <!-- 하단 버튼 레이아웃 -->
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:padding="16dp">
+            android:layout_height="70dp"
+            android:padding="16dp"
+            android:orientation="horizontal"
+            android:background="#FFFFFF">
 
-            <!-- 가운데 큰 버튼 -->
-            <ImageButton
-                android:id="@+id/search_btn"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center|top"
-                android:background="@drawable/search_icon" />
-
-            <!-- 왼쪽 작은 버튼 -->
-            <ImageButton
+            <!-- 왼쪽 버튼 -->
+            <Button
                 android:id="@+id/favorite_btn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom|start"
-                android:background="@drawable/favorite_icon"
-                android:layout_marginStart="50dp"
-                android:layout_marginBottom="30dp" />
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="즐겨찾기"
+                android:backgroundTint="#6200EE"
+                android:textColor="#FFFFFF"
+                app:cornerRadius="8dp"/>
 
-            <!-- 오른쪽 작은 버튼 -->
-            <ImageButton
+            <!-- 가운데 버튼 -->
+            <Button
+                android:id="@+id/search_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="주변주차장"
+                android:backgroundTint="#132AF0"
+                android:textColor="#FFFFFF"
+                app:cornerRadius="8dp"/>
+
+            <!-- 오른쪽 버튼 -->
+            <Button
                 android:id="@+id/profile_btn"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_gravity="bottom|end"
-                android:background="@drawable/myprofile_icon"
-                android:layout_marginEnd="50dp"
-                android:layout_marginBottom="30dp" />
-        </FrameLayout>
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="내 프로필"
+                android:backgroundTint="#6200EE"
+                android:textColor="#FFFFFF"
+                app:cornerRadius="8dp"/>
+        </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

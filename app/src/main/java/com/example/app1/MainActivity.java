@@ -8,7 +8,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -24,7 +23,6 @@ import com.naver.maps.map.OnMapReadyCallback;
 import com.naver.maps.map.UiSettings;
 import com.naver.maps.map.overlay.LocationOverlay;
 import com.naver.maps.map.overlay.Marker;
-import com.naver.maps.map.overlay.OverlayImage;
 import com.naver.maps.map.widget.CompassView;
 
 import org.json.JSONArray;
@@ -41,10 +39,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Marker marker;
 
     private EditText addressInput;
-    private Button searchButton;
+    private Button searchButton, favoriteButton, profileButton, nearbyParkingButton;
     private Spinner mapTypeSpinner;
-
-    private CompassView compassView; // 나침반 뷰 추가
+    private CompassView compassView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,13 +51,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapView = findViewById(R.id.map_view);
         mapView.getMapAsync(this);
 
-        addressInput = findViewById(R.id.address_input); // 주소 입력 필드
-        searchButton = findViewById(R.id.search_button); // 검색 버튼
-        compassView = findViewById(R.id.compass_view); // 나침반 뷰 초기화
-        mapTypeSpinner = findViewById(R.id.map_type_spinner); // 드롭다운 버튼 초기화
+        addressInput = findViewById(R.id.address_input);
+        searchButton = findViewById(R.id.search_button);
+        compassView = findViewById(R.id.compass_view);
+        mapTypeSpinner = findViewById(R.id.map_type_spinner);
+
+        // 하단 버튼 초기화
+        favoriteButton = findViewById(R.id.favorite_btn);
+        profileButton = findViewById(R.id.profile_btn);
+        nearbyParkingButton = findViewById(R.id.search_btn);
 
         // 지도 유형 선택을 위한 스피너 설정
-        String[] mapTypes = {"일반지도", "하이브리드지도"};  //드랍다운 버튼을 눌렀을때 뜨는 옵션목록
+        String[] mapTypes = {"일반지도", "하이브리드지도"};
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mapTypes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -71,19 +73,17 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (naverMap != null) {
                     switch (position) {
                         case 0:
-                            naverMap.setMapType(NaverMap.MapType.Basic); // 일반지도
+                            naverMap.setMapType(NaverMap.MapType.Basic);
                             break;
                         case 1:
-                            naverMap.setMapType(NaverMap.MapType.Hybrid); // 하이브리드지도
+                            naverMap.setMapType(NaverMap.MapType.Hybrid);
                             break;
                     }
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // 아무 동작도 하지 않음
-            }
+            public void onNothingSelected(AdapterView<?> parent) {}
         });
 
         // 주소 검색 버튼 클릭 리스너
@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 String address = addressInput.getText().toString();
                 if (!address.isEmpty()) {
-                    // 주소를 이용해 좌표 검색
                     new NaverGeocodingTask().execute(address);
                 } else {
                     Toast.makeText(MainActivity.this, "주소를 입력하세요", Toast.LENGTH_SHORT).show();
@@ -100,8 +99,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        ImageButton favoriteBtn = findViewById(R.id.favorite_btn);
-        favoriteBtn.setOnClickListener(new View.OnClickListener() {
+        // 즐겨찾기 버튼 클릭 리스너
+        favoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, FavoriteActivity.class);
@@ -109,12 +108,21 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        ImageButton profile_btn = findViewById(R.id.profile_btn);
-        profile_btn.setOnClickListener(new View.OnClickListener() {
+        // 내 프로필 버튼 클릭 리스너
+        profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        // 주변 주차장 버튼 클릭 리스너
+        nearbyParkingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 여기에 주변 주차장 기능 추가
+                Toast.makeText(MainActivity.this, "주변 주차장 기능이 준비 중입니다.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -125,19 +133,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         LocationOverlay locationOverlay = naverMap.getLocationOverlay();
         locationOverlay.setVisible(true);
-        naverMap.setLocationTrackingMode(LocationTrackingMode.Face);// 지도에 내 위치 표시
+        naverMap.setLocationTrackingMode(LocationTrackingMode.Face);
         naverMap.setMapType(NaverMap.MapType.Basic);
 
+        UiSettings uiSettings = naverMap.getUiSettings();
+        uiSettings.setCompassEnabled(false);
+        uiSettings.setZoomControlEnabled(false);
+        uiSettings.setLocationButtonEnabled(true);
 
-
-
-
-        UiSettings uiSettings = naverMap.getUiSettings(); // 인터페이스 옵션 모음
-        uiSettings.setCompassEnabled(false); // 기본 나침반 비활성화
-        uiSettings.setZoomControlEnabled(false); // 줌 컨트롤 버튼 비활성화
-        uiSettings.setLocationButtonEnabled(true); // 내 위치로 이동 버튼
-
-        // 나침반 뷰와 지도 연결
         compassView.setMap(naverMap);
     }
 
@@ -167,7 +170,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 reader.close();
 
-                // JSON 데이터 파싱
                 JSONObject jsonObject = new JSONObject(response.toString());
                 JSONArray addresses = jsonObject.getJSONArray("addresses");
 
@@ -189,7 +191,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         @Override
         protected void onPostExecute(LatLng latLng) {
             if (latLng != null) {
-                // 지도에 마커 표시 및 위치 이동
                 if (marker == null) {
                     marker = new Marker();
                 }
