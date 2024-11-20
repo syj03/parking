@@ -1,8 +1,9 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
     <LinearLayout
@@ -16,21 +17,17 @@
             android:layout_weight="6">
 
             <!-- 네이버 지도 -->
-
-            <!-- 나침반 뷰 추가 -->
-
             <com.naver.maps.map.MapView
                 android:id="@+id/map_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></com.naver.maps.map.MapView>
+                android:layout_height="match_parent" />
 
             <com.naver.maps.map.widget.CompassView
                 android:id="@+id/compass_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|left"
-                android:padding="10dp">
-            </com.naver.maps.map.widget.CompassView>
+                android:padding="10dp" />
 
             <!-- 검색바를 지도 위에 겹쳐서 배치 -->
             <LinearLayout
@@ -56,6 +53,8 @@
                     android:padding="8dp"
                     android:backgroundTint="#3F51B5"
                     android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    android:textSize="15dp"
                     android:text="검색" />
             </LinearLayout>
 
@@ -74,44 +73,65 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="70dp"
-            android:padding="16dp"
             android:orientation="horizontal"
             android:background="#FFFFFF">
 
-            <!-- 왼쪽 버튼 -->
-            <Button
-                android:id="@+id/favorite_btn"
+            <!-- 즐겨찾기 버튼 -->
+            <LinearLayout
+                android:id="@+id/favorite_layout_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="즐겨찾기"
-                android:backgroundTint="#6200EE"
-                android:textColor="#FFFFFF"
-                app:cornerRadius="8dp"/>
+                android:gravity="center"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
 
-            <!-- 가운데 버튼 -->
-            <Button
-                android:id="@+id/search_btn"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:text="주변주차장"
-                android:backgroundTint="#132AF0"
-                android:textColor="#FFFFFF"
-                app:cornerRadius="8dp"/>
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/baseline_star_border"
+                    android:scaleType="fitCenter" />
+            </LinearLayout>
 
-            <!-- 오른쪽 버튼 -->
-            <Button
-                android:id="@+id/profile_btn"
+            <!-- 주변 주차장 버튼 -->
+            <LinearLayout
+                android:id="@+id/search_layout_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="내 프로필"
-                android:backgroundTint="#6200EE"
-                android:textColor="#FFFFFF"
-                app:cornerRadius="8dp"/>
+                android:gravity="center"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/baseline_garage_24"
+                    android:scaleType="fitCenter" />
+            </LinearLayout>
+
+            <!-- 내 프로필 버튼 -->
+            <LinearLayout
+                android:id="@+id/profile_layout_btn"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/person"
+                    android:scaleType="fitCenter" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

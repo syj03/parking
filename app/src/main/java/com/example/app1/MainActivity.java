@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -39,12 +40,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Marker marker;
 
     private EditText addressInput;
-    private Button searchButton, favoriteButton, profileButton, nearbyParkingButton;
+    private Button searchButton;
     private Spinner mapTypeSpinner;
     private CompassView compassView;
 
+    // LinearLayouts for clickable buttons
+    private LinearLayout favoriteLayoutBtn, profileLayoutBtn, searchLayoutBtn;
+
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -56,10 +60,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         compassView = findViewById(R.id.compass_view);
         mapTypeSpinner = findViewById(R.id.map_type_spinner);
 
-        // 하단 버튼 초기화
-        favoriteButton = findViewById(R.id.favorite_btn);
-        profileButton = findViewById(R.id.profile_btn);
-        nearbyParkingButton = findViewById(R.id.search_btn);
+        // 하단 버튼 LinearLayouts
+        favoriteLayoutBtn = findViewById(R.id.favorite_layout_btn);
+        profileLayoutBtn = findViewById(R.id.profile_layout_btn);
+        searchLayoutBtn = findViewById(R.id.search_layout_btn);
 
         // 지도 유형 선택을 위한 스피너 설정
         String[] mapTypes = {"일반지도", "하이브리드지도"};
@@ -87,45 +91,40 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         });
 
         // 주소 검색 버튼 클릭 리스너
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String address = addressInput.getText().toString();
-                if (!address.isEmpty()) {
-                    new NaverGeocodingTask().execute(address);
-                } else {
-                    Toast.makeText(MainActivity.this, "주소를 입력하세요", Toast.LENGTH_SHORT).show();
-                }
+        searchButton.setOnClickListener(v -> {
+            String address = addressInput.getText().toString();
+            if (!address.isEmpty()) {
+                new NaverGeocodingTask().execute(address);
+            } else {
+                Toast.makeText(MainActivity.this, "주소를 입력하세요", Toast.LENGTH_SHORT).show();
             }
         });
 
-        // 즐겨찾기 버튼 클릭 리스너
-        favoriteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, FavoriteActivity.class);
+        // 하단 버튼 클릭 리스너 설정
+        setBottomButtonListeners();
+    }
+
+    private void setBottomButtonListeners() {
+        View.OnClickListener listener = v -> {
+            Intent intent;
+            int id = v.getId(); // 클릭된 뷰의 ID를 가져옴
+
+            if (id == R.id.favorite_layout_btn) {
+                intent = new Intent(MainActivity.this, FavoriteActivity.class);
                 startActivity(intent);
-            }
-        });
-
-        // 내 프로필 버튼 클릭 리스너
-        profileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+            } else if (id == R.id.profile_layout_btn) {
+                intent = new Intent(MainActivity.this, ProfileActivity.class);
                 startActivity(intent);
-            }
-        });
-
-        // 주변 주차장 버튼 클릭 리스너
-        nearbyParkingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // 여기에 주변 주차장 기능 추가
+            } else if (id == R.id.search_layout_btn) {
                 Toast.makeText(MainActivity.this, "주변 주차장 기능이 준비 중입니다.", Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+
+        favoriteLayoutBtn.setOnClickListener(listener);
+        profileLayoutBtn.setOnClickListener(listener);
+        searchLayoutBtn.setOnClickListener(listener);
     }
+
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {

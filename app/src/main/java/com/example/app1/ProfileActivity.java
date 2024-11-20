@@ -9,10 +9,10 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,11 +41,11 @@ public class ProfileActivity extends AppCompatActivity {
         // SharedPreferences 초기화
         sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
 
-        // 뒤로 가기 버튼 설정
+        // 뒤로 가기 버튼
         ImageButton backButton = findViewById(R.id.back_btn);
         backButton.setOnClickListener(view -> finish());
 
-        // 프로필 이미지 초기값 설정
+        // 프로필 이미지 초기화
         profileImageView = findViewById(R.id.imageView3);
         String profilePictureUri = sharedPreferences.getString("profilePictureUri", null);
         if (profilePictureUri != null) {
@@ -60,27 +60,26 @@ public class ProfileActivity extends AppCompatActivity {
             profileImageView.setImageResource(R.drawable.profilepicture);
         }
 
-        // 이름 초기값 설정
+        // 이름 초기화
         nameTextView = findViewById(R.id.nameTextView);
         String registeredName = sharedPreferences.getString("registeredName", "name");
         nameTextView.setText(registeredName);
 
-        // 프로필 이미지 변경 버튼 설정
-        Button changeProfileImageButton = findViewById(R.id.chnage_profile_image_btn);
-        changeProfileImageButton.setOnClickListener(view -> openGallery());
+        // 프로필 사진 변경 클릭 이벤트
+        LinearLayout changeProfileImageLayout = findViewById(R.id.change_profile_image_layout);
+        changeProfileImageLayout.setOnClickListener(view -> openGallery());
 
-        // 이름 변경 버튼 설정
-        Button changeNicknameButton = findViewById(R.id.change_kickname_btn);
-        changeNicknameButton.setOnClickListener(view -> showChangeNameDialog());
+        // 이름 변경 클릭 이벤트
+        LinearLayout changeNicknameLayout = findViewById(R.id.change_nickname_layout);
+        changeNicknameLayout.setOnClickListener(view -> showChangeNameDialog());
 
-        // 내 리뷰 목록 버튼 설정 (기능 추가 필요)
-        Button myReviewListButton = findViewById(R.id.my_review_list_btn);
-        myReviewListButton.setOnClickListener(view -> {
-            // 여기서 리뷰 목록 확인 기능 추가 가능
-            Toast.makeText(ProfileActivity.this, "내 리뷰 목록 기능은 준비 중입니다.", Toast.LENGTH_SHORT).show();
-        });
+        // 내 리뷰 목록 클릭 이벤트
+        LinearLayout myReviewListLayout = findViewById(R.id.my_review_list_layout);
+        myReviewListLayout.setOnClickListener(view ->
+                Toast.makeText(ProfileActivity.this, "내 리뷰 목록 기능은 준비 중입니다.", Toast.LENGTH_SHORT).show()
+        );
 
-        // 권한 요청
+        // 저장소 권한 요청
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, STORAGE_PERMISSION_CODE);
         }
