@@ -31,11 +31,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"/>
         </LinearLayout>
+
         <ImageView
             android:id="@+id/imageView3"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             tools:srcCompat="@tools:sample/avatars" />
+
         <TextView
             android:id="@+id/nameTextView"
             android:layout_width="match_parent"
@@ -47,60 +49,30 @@
             android:textSize="30dp"
             android:textColor="#3E3E3E"
             android:textStyle="bold" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_marginBottom="20dp">
-            <LinearLayout
+
+            <TextView
+                android:id="@+id/review_count_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="2"
-                    android:textSize="30dp"
-                    android:textStyle="bold" />
-                <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:text="즐겨찾기"
+                android:text="0"
+                android:textSize="30dp"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="내가 남긴 리뷰"
                 android:textSize="15dp"
                 android:textStyle="bold" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="24"
-                    android:textSize="30dp"
-                    android:textStyle="bold" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="내가 남긴 리뷰"
-                    android:textSize="15dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
-
-
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/change_profile_image_layout"
             android:layout_width="match_parent"
@@ -181,7 +153,6 @@
                 android:textSize="18dp"
                 android:textStyle="bold" />
         </LinearLayout>
-
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

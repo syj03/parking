@@ -78,25 +78,26 @@
             android:orientation="horizontal">
 
             <!-- 즐겨찾기 버튼 -->
+
+            <!-- 주변 주차장 버튼 -->
             <LinearLayout
-                android:id="@+id/favorite_layout_btn"
+                android:id="@+id/reservation_list_layout_btn"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:padding="8dp"
+                android:background="?attr/selectableItemBackground"
                 android:clickable="true"
                 android:focusable="true"
-                android:background="?attr/selectableItemBackground">
+                android:gravity="center"
+                android:padding="8dp">
 
                 <ImageView
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:src="@drawable/baseline_star_border"
-                    android:scaleType="fitCenter" />
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/baseline_calendar_month_24" />
             </LinearLayout>
 
-            <!-- 주변 주차장 버튼 -->
             <LinearLayout
                 android:id="@+id/search_layout_btn"
                 android:layout_width="0dp"

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/parking_lot_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="주차장 이름"
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/reservation_date_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="문자열"
+        android:inputType="date"
+        android:layout_marginBottom="16dp" />
+
+    a<EditText
+        android:id="@+id/reservation_time_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="문자열"
+        android:inputType="time"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/reserved_slots_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="정수"
+        android:inputType="number"
+        android:layout_marginBottom="16dp" />
+
+    <Button
+        android:id="@+id/submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="예약하기" />
+</LinearLayout>

@@ -6,9 +6,9 @@
     <!-- 로고나 이미지 등을 표시할 수 있는 예제 -->
     <ImageView
         android:id="@+id/intro_logo"
-        android:layout_width="126dp"
-        android:layout_height="155dp"
-        android:layout_centerInParent="true"
-        android:src="@drawable/logo" /> <!-- your_logo는 로고 이미지 -->
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/plogo"
+        android:layout_centerInParent="true" /> <!-- your_logo는 로고 이미지 -->
 
 </RelativeLayout>
