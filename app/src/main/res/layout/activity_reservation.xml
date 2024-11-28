@@ -1,45 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
+    <!-- 주차장 이름 -->
     <TextView
         android:id="@+id/parking_lot_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="주차장 이름"
         android:textSize="18sp"
-        android:layout_marginBottom="16dp" />
+        android:textStyle="bold" />
 
-    <EditText
-        android:id="@+id/reservation_date_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="문자열"
-        android:inputType="date"
-        android:layout_marginBottom="16dp" />
-
-    a<EditText
-        android:id="@+id/reservation_time_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="문자열"
-        android:inputType="time"
-        android:layout_marginBottom="16dp" />
-
-    <EditText
-        android:id="@+id/reserved_slots_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="정수"
-        android:inputType="number"
-        android:layout_marginBottom="16dp" />
-
+    <!-- 예약 날짜 선택 -->
     <Button
-        android:id="@+id/submit_button"
+        android:id="@+id/select_date_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="날짜 선택"
+        android:layout_marginTop="16dp" />
+
+    <!-- 선택된 날짜 표시 -->
+    <TextView
+        android:id="@+id/selected_date_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="선택된 날짜: 없음"
+        android:layout_marginTop="8dp" />
+
+    <!-- 예약 시간 선택 -->
+    <Button
+        android:id="@+id/select_time_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="시간 선택"
+        android:layout_marginTop="16dp" />
+
+    <!-- 선택된 시간 표시 -->
+    <TextView
+        android:id="@+id/selected_time_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="선택된 시간: 없음"
+        android:layout_marginTop="8dp" />
+
+    <!-- 예약 확인 버튼 -->
+    <Button
+        android:id="@+id/confirm_reservation_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="예약하기" />
+        android:text="예약 확인"
+        android:layout_marginTop="24dp" />
+
 </LinearLayout>

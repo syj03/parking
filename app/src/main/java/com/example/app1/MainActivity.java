@@ -114,6 +114,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Intent intent;
             if (v.getId() == R.id.reservation_list_layout_btn) {
                 intent = new Intent(MainActivity.this, ReservationListActivity.class);
+                intent.putExtra("userId", userId); // userId 전달
+                Log.d("MainActivity", "Passing userId: " + userId); // 디버그용 로그 추가
             } else if (v.getId() == R.id.profile_layout_btn) {
                 intent = new Intent(MainActivity.this, ProfileActivity.class);
 
@@ -132,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         profileLayoutBtn.setOnClickListener(listener);
         searchLayoutBtn.setOnClickListener(listener);
     }
+
 
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {

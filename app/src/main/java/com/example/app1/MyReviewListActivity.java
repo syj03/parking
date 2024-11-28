@@ -2,7 +2,8 @@ package com.example.app1;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,6 +25,7 @@ public class MyReviewListActivity extends AppCompatActivity {
     private int userId;
 
     private RecyclerView recyclerView;
+    private TextView emptyView; // 안내 문구를 위한 TextView
     private ReviewAdapter reviewAdapter;
     private ArrayList<Review> reviewList;
 
@@ -35,8 +37,10 @@ public class MyReviewListActivity extends AppCompatActivity {
         // Intent에서 사용자 ID 받기
         userId = getIntent().getIntExtra("userId", -1);
 
-        // RecyclerView 초기화
+        // RecyclerView와 TextView 초기화
         recyclerView = findViewById(R.id.recyclerView);
+        emptyView = findViewById(R.id.empty_view); // 안내 문구 뷰
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         reviewList = new ArrayList<>();
         reviewAdapter = new ReviewAdapter(reviewList);
@@ -104,6 +108,7 @@ public class MyReviewListActivity extends AppCompatActivity {
 
                         reviewList.add(new Review(id, parkingLotName, reviewText, rating, date));
                     }
+                    toggleEmptyView(); // 리뷰 상태에 따라 UI 갱신
                     reviewAdapter.notifyDataSetChanged();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -112,6 +117,17 @@ public class MyReviewListActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(MyReviewListActivity.this, "리뷰를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
             }
+        }
+    }
+
+    // 리뷰가 있는지 여부에 따라 UI 갱신
+    private void toggleEmptyView() {
+        if (reviewList.isEmpty()) {
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
         }
     }
 }

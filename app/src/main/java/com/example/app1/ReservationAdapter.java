@@ -1,67 +1,52 @@
 package com.example.app1;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+import java.util.ArrayList;
 
-public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ReservationViewHolder> {
+public class ReservationAdapter extends RecyclerView.Adapter<ReservationAdapter.ViewHolder> {
 
-    private List<Reservation> reservationList;
-    private Context context;
+    private ArrayList<Reservation> reservationList;
 
-    public ReservationAdapter(List<Reservation> reservationList) {
+    public ReservationAdapter(ArrayList<Reservation> reservationList) {
         this.reservationList = reservationList;
     }
 
     @NonNull
     @Override
-    public ReservationViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        context = parent.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.item_reservation, parent, false);
-        return new ReservationViewHolder(view);
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_reservation, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ReservationViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Reservation reservation = reservationList.get(position);
         holder.parkingLotNameTextView.setText(reservation.getParkingLotName());
-        holder.reservationTimeTextView.setText(reservation.getReservationTime());
-
-        // 예약 취소 버튼 클릭 이벤트 설정 (리스트에서 항목 제거)
-        holder.cancelReservationButton.setOnClickListener(v -> {
-            // 예제 데이터에서 항목을 삭제
-            reservationList.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, reservationList.size());
-
-            // 취소 알림 메시지
-            Toast.makeText(context, "예약이 취소되었습니다.", Toast.LENGTH_SHORT).show();
-        });
+        holder.reservationTimeTextView.setText("예약 시간: " + reservation.getReservationTime());
+        holder.statusTextView.setText(reservation.getStatus()); // 예약완료 출력
     }
+
 
     @Override
     public int getItemCount() {
         return reservationList.size();
     }
 
-    static class ReservationViewHolder extends RecyclerView.ViewHolder {
-        TextView parkingLotNameTextView, reservationTimeTextView;
-        Button cancelReservationButton;
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView parkingLotNameTextView, reservationTimeTextView, statusTextView;
 
-        public ReservationViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             parkingLotNameTextView = itemView.findViewById(R.id.parking_lot_name);
             reservationTimeTextView = itemView.findViewById(R.id.reservation_time);
-            cancelReservationButton = itemView.findViewById(R.id.cancel_reservation_button);
+            statusTextView = itemView.findViewById(R.id.reservation_status);
         }
     }
 }

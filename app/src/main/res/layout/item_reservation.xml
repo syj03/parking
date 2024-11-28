@@ -4,9 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="16dp"
-    app:cardElevation="4dp"
-    app:cardCornerRadius="8dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="6dp"
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,33 +23,26 @@
             android:text="주차장 이름"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:textColor="#000000"/>
+            android:textColor="#000000" />
 
-        <!-- 예약 날짜와 시간 -->
+        <!-- 예약 시간 -->
         <TextView
             android:id="@+id/reservation_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="예약 시간"
+            android:text="예약 시간: YYYY-MM-DD HH:mm"
             android:textSize="14sp"
-            android:textColor="#666666"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:textColor="#666666" />
 
-        <!-- 하단 버튼 (취소 버튼) -->
-        <LinearLayout
-            android:layout_width="match_parent"
+        <!-- 예약 상태 -->
+        <TextView
+            android:id="@+id/reservation_status"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end"
-            android:layout_marginTop="16dp">
-
-            <Button
-                android:id="@+id/cancel_reservation_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="예약 취소"
-                android:backgroundTint="#FF4081"
-                android:textColor="#FFFFFF"/>
-        </LinearLayout>
+            android:text="상태: 예약완료"
+            android:textSize="14sp"
+            android:layout_marginTop="4dp"
+            android:textColor="#4CAF50" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
