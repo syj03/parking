@@ -111,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                     String password = user.getString("password");
                     String birthDate = user.getString("birthDate");
 
-                    Toast.makeText(LoginActivity.this, "로그인 id값: " + userId, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(LoginActivity.this, "로그인 id값: " + userId, Toast.LENGTH_SHORT).show();
 
                     // 로그인 성공 시 MainActivity로 이동하며 사용자 정보 전달
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);

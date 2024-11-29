@@ -37,7 +37,7 @@ public class ParkingDetailsActivity extends AppCompatActivity {
         // 예약 버튼 클릭 이벤트
         reserveButton.setOnClickListener(v -> {
             // 사용자 고유 ID와 주차장 ID를 토스트 메시지로 출력
-            Toast.makeText(ParkingDetailsActivity.this, "사용자 ID: " + userId + ", 주차장 ID: " + parkingLotId, Toast.LENGTH_LONG).show();
+            //.makeText(ParkingDetailsActivity.this, "사용자 ID: " + userId + ", 주차장 ID: " + parkingLotId, Toast.LENGTH_LONG).show();
 
             // 예약 화면으로 이동
             Intent intent = new Intent(ParkingDetailsActivity.this, ReservationActivity.class);
