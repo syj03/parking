@@ -54,24 +54,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginBottom="20dp">
-
-            <TextView
-                android:id="@+id/review_count_text_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="0"
-                android:textSize="30dp"
-                android:textStyle="bold" />
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="내가 남긴 리뷰"
-                android:textSize="15dp"
-                android:textStyle="bold" />
-        </LinearLayout>
+            android:layout_marginBottom="20dp"/>
 
         <LinearLayout
             android:id="@+id/change_profile_image_layout"

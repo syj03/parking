@@ -18,9 +18,18 @@ import java.util.Locale;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
 
     private ArrayList<Review> reviewList;
+    private OnDeleteClickListener deleteClickListener; // For delete functionality
 
+    // Constructor for delete functionality
+    public ReviewAdapter(ArrayList<Review> reviewList, OnDeleteClickListener deleteClickListener) {
+        this.reviewList = reviewList;
+        this.deleteClickListener = deleteClickListener;
+    }
+
+    // Constructor for no delete functionality
     public ReviewAdapter(ArrayList<Review> reviewList) {
         this.reviewList = reviewList;
+        this.deleteClickListener = null; // No delete functionality
     }
 
     @NonNull
@@ -38,9 +47,17 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
         holder.reviewTextView.setText(review.getReviewText());
         holder.reviewRatingBar.setRating(review.getRating());
 
-        // 날짜 포맷 변환
+        // Date formatting
         String formattedDate = formatDateString(review.getDate());
         holder.dateTextView.setText(formattedDate);
+
+        // Set delete button functionality if available
+        if (deleteClickListener != null) {
+            holder.deleteButton.setVisibility(View.VISIBLE); // Show delete button
+            holder.deleteButton.setOnClickListener(v -> deleteClickListener.onDeleteClick(review.getId()));
+        } else {
+            holder.deleteButton.setVisibility(View.GONE); // Hide delete button
+        }
     }
 
     @Override
@@ -51,6 +68,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     static class ReviewViewHolder extends RecyclerView.ViewHolder {
         TextView parkingLotNameTextView, reviewTextView, dateTextView;
         RatingBar reviewRatingBar;
+        TextView deleteButton; // For delete functionality
 
         public ReviewViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -58,22 +76,22 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             reviewTextView = itemView.findViewById(R.id.reviewTextView);
             dateTextView = itemView.findViewById(R.id.dateTextView);
             reviewRatingBar = itemView.findViewById(R.id.reviewRatingBar);
+            deleteButton = itemView.findViewById(R.id.deleteButton); // Add delete button
         }
     }
 
-    // 날짜 포맷 변환 메서드
+    // Interface for delete button click handling
+    public interface OnDeleteClickListener {
+        void onDeleteClick(int reviewId);
+    }
+
+    // Format date helper method
     private String formatDateString(String dateString) {
         try {
-            // 서버에서 받은 날짜 형식
             SimpleDateFormat serverFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault());
-
-            // 사용자 친화적인 날짜 형식
             SimpleDateFormat userFormat = new SimpleDateFormat("yyyy년 MM월 dd일 HH:mm", Locale.getDefault());
-
-            // 변환
             Date date = serverFormat.parse(dateString);
             return userFormat.format(date);
-
         } catch (ParseException e) {
             e.printStackTrace();
             return "날짜 변환 오류";

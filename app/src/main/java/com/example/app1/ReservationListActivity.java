@@ -44,11 +44,12 @@ public class ReservationListActivity extends AppCompatActivity {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         reservationList = new ArrayList<>();
-        reservationAdapter = new ReservationAdapter(reservationList);
+        reservationAdapter = new ReservationAdapter(reservationList, (reservationId, position) ->
+                new DeleteReservationTask().execute(reservationId, position)
+        );
         recyclerView.setAdapter(reservationAdapter);
 
-        // 주차장 데이터 먼저 가져오기
-        new FetchParkingLotsTask().execute();
+        new FetchParkingLotsTask().execute(); // 주차장 데이터 먼저 가져오기
     }
 
     private class FetchParkingLotsTask extends AsyncTask<Void, Void, Boolean> {
@@ -154,6 +155,41 @@ public class ReservationListActivity extends AppCompatActivity {
                 }
             } else {
                 Toast.makeText(ReservationListActivity.this, "예약 데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    private class DeleteReservationTask extends AsyncTask<Integer, Void, Boolean> {
+        private int position;
+
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            int reservationId = params[0];
+            position = params[1];
+
+            try {
+                URL url = new URL(RESERVATION_API_URL + "/" + reservationId);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("DELETE");
+
+                int responseCode = connection.getResponseCode();
+                return responseCode == HttpURLConnection.HTTP_NO_CONTENT;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (success) {
+                Toast.makeText(ReservationListActivity.this, "예약이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                reservationList.remove(position);
+                reservationAdapter.notifyItemRemoved(position);
+                toggleEmptyView();
+            } else {
+                Toast.makeText(ReservationListActivity.this, "예약 삭제에 실패했습니다.", Toast.LENGTH_SHORT).show();
             }
         }
     }

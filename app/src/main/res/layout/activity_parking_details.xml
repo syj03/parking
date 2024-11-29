@@ -27,35 +27,82 @@
             android:textColor="#333333"
             android:text="주차장 이름" />
 
-        <!-- 예약 버튼 -->
-        <Button
-            android:layout_gravity="center"
-            android:id="@+id/reserve_button"
-            android:layout_width="180dp"
+        <!-- 버튼 영역 -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="예약"
-            android:textSize="16sp"
-            android:layout_marginTop="16dp"
-            android:padding="12dp"
-            android:backgroundTint="#4CAF50"
-            android:textColor="#FFFFFF"
-            android:elevation="4dp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp">
 
-        <!-- 리뷰 작성 버튼 -->
-        <Button
-            android:id="@+id/review_button"
-            android:layout_gravity="center"
-            android:layout_width="180dp"
+            <!-- 예약 버튼 -->
+            <Button
+                android:id="@+id/reserve_button"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="예약"
+                android:textSize="16sp"
+                android:padding="12dp"
+                android:backgroundTint="#4CAF50"
+                android:textColor="#FFFFFF"
+                android:elevation="4dp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp" />
+
+            <!-- 리뷰 작성 버튼 -->
+            <Button
+                android:id="@+id/review_button"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#2196F3"
+                android:elevation="4dp"
+                android:padding="12dp"
+                android:text="리뷰 작성"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <!-- 리뷰 안내 문구 -->
+        <TextView
+            android:id="@+id/review_empty_view"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:backgroundTint="#2196F3"
-            android:elevation="4dp"
-            android:padding="12dp"
-            android:text="리뷰 작성"
-            android:textColor="#FFFFFF"
+            android:text="아직 리뷰가 없습니다."
             android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textColor="#666666"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="16dp" />
+
+        <!-- 리뷰 목록 -->
+        <!-- RecyclerView -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/reviewRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <!-- Empty state message -->
+        <TextView
+            android:id="@+id/empty_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="작성된 리뷰가 없습니다."
+            android:textSize="18sp"
+            android:textColor="#666666"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

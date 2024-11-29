@@ -44,5 +44,16 @@
             android:textSize="14sp"
             android:layout_marginTop="4dp"
             android:textColor="#4CAF50" />
+
+        <!-- 삭제 버튼 -->
+        <Button
+            android:id="@+id/delete_reservation_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="12dp"
+            android:backgroundTint="#FF5252"
+            android:text="삭제"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 </androidx.cardview.widget.CardView>
