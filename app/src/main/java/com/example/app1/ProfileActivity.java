@@ -84,7 +84,9 @@ public class ProfileActivity extends AppCompatActivity {
             intent.putExtra("userId", userId);
             startActivity(intent);
         });
-
+    // 계정 탈퇴 클릭 이벤트
+        LinearLayout deleteAccountLayout = findViewById(R.id.my_delet_layout);
+        deleteAccountLayout.setOnClickListener(view -> showDeleteAccountDialog());
         // 저장소 권한 요청
         requestStoragePermission();
     }
@@ -251,5 +253,53 @@ public class ProfileActivity extends AppCompatActivity {
                 Toast.makeText(ProfileActivity.this, "이름 변경에 실패했습니다.", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+    // 계정 탈퇴 확인 다이얼로그 표시
+    private void showDeleteAccountDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("계정 탈퇴");
+        builder.setMessage("정말로 계정을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.");
+
+        builder.setPositiveButton("확인", (dialog, which) -> new DeleteAccountTask().execute(userId));
+        builder.setNegativeButton("취소", (dialog, which) -> dialog.dismiss());
+
+        builder.show();
+    }
+    // 계정 삭제를 처리하는 AsyncTask
+    private class DeleteAccountTask extends AsyncTask<Integer, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            int userId = params[0];
+            try {
+                URL url = new URL(USER_API_URL + "/" + userId);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("DELETE");
+                connection.setRequestProperty("Content-Type", "application/json");
+
+                int responseCode = connection.getResponseCode();
+                return responseCode == HttpURLConnection.HTTP_OK || responseCode == HttpURLConnection.HTTP_NO_CONTENT;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if (success) {
+                Toast.makeText(ProfileActivity.this, "계정이 삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                navigateToLogin();
+            } else {
+                Toast.makeText(ProfileActivity.this, "계정 삭제에 실패했습니다. 다시 시도해주세요.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    // 로그인 화면으로 이동
+    private void navigateToLogin() {
+        Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
     }
 }

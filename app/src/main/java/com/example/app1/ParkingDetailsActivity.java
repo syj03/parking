@@ -38,6 +38,10 @@ public class ParkingDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parking_details);
 
+
+
+
+
         // Retrieve data passed via Intent
         Intent intent = getIntent();
         parkingLotId = intent.getIntExtra("parkingLotId", -1);

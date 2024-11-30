@@ -132,10 +132,13 @@ public class ReservationListActivity extends AppCompatActivity {
         protected void onPostExecute(JSONArray reservations) {
             if (reservations != null) {
                 try {
+                    boolean hasReservations = false;
+
                     for (int i = 0; i < reservations.length(); i++) {
                         JSONObject reservationJson = reservations.getJSONObject(i);
 
                         if (reservationJson.getInt("userId") == userId) {
+                            hasReservations = true; // 예약 데이터가 있는 경우
                             int id = reservationJson.getInt("id");
                             String reservationTime = reservationJson.getString("reservationTime");
                             int parkingLotId = reservationJson.getInt("parkingLotId");
@@ -147,16 +150,24 @@ public class ReservationListActivity extends AppCompatActivity {
                     }
 
                     reservationAdapter.notifyDataSetChanged();
-                    toggleEmptyView();
+                    if (!hasReservations) {
+                        Toast.makeText(ReservationListActivity.this, "예약 내역이 없습니다.", Toast.LENGTH_SHORT).show();
+                    }
 
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(ReservationListActivity.this, "예약 데이터를 처리하는 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
                 }
             } else {
-                Toast.makeText(ReservationListActivity.this, "예약 데이터를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                // 서버 응답이 204 또는 데이터가 없을 경우
+                Toast.makeText(ReservationListActivity.this, "예약 내역이 없습니다.", Toast.LENGTH_SHORT).show();
             }
+
+            // 항상 호출하여 UI를 업데이트
+            toggleEmptyView();
         }
+
+
     }
 
     private class DeleteReservationTask extends AsyncTask<Integer, Void, Boolean> {
@@ -197,10 +208,11 @@ public class ReservationListActivity extends AppCompatActivity {
     private void toggleEmptyView() {
         if (reservationList.isEmpty()) {
             recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.VISIBLE); // 예약이 없을 경우 안내 문구 표시
         } else {
             recyclerView.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.GONE); // 예약이 있으면 RecyclerView 표시
         }
     }
+
 }

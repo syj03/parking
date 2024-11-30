@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -21,6 +23,7 @@ import java.util.Date;
 public class RegisterActivity extends AppCompatActivity {
 
     private static final String REGISTER_API_URL = "http://1.237.179.199:8080/api/users/add"; // 서버의 회원가입 API URL
+    private static final String EMAIL_CHECK_API_URL = "http://1.237.179.199:8080/api/users/check-email"; // 이메일 중복 검사 API URL
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +53,8 @@ public class RegisterActivity extends AppCompatActivity {
                 if (formattedBirthdate == null) {
                     Toast.makeText(RegisterActivity.this, "생년월일 형식이 잘못되었습니다. (올바른 형식: yyyymmdd)", Toast.LENGTH_SHORT).show();
                 } else {
-                    // 서버로 회원가입 데이터 제출
-                    new RegisterUserTask().execute(name, email, password, formattedBirthdate);
+                    // 이메일 중복 검사 후 회원가입 진행
+                    new CheckEmailTask().execute(name, email, password, formattedBirthdate);
                 }
             }
         });
@@ -70,15 +73,58 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    // 이메일 중복 검사를 수행하는 AsyncTask
+    private class CheckEmailTask extends AsyncTask<Object, Void, Boolean> {
+        private String name;
+        private String email;
+        private String password;
+        private String birthdate;
+
+        @Override
+        protected Boolean doInBackground(Object... params) {
+            name = (String) params[0];
+            email = (String) params[1];
+            password = (String) params[2];
+            birthdate = (String) params[3];
+
+            try {
+                // 서버로 이메일 중복 검사 요청
+                URL url = new URL(EMAIL_CHECK_API_URL + "?email=" + email);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
+
+                int responseCode = connection.getResponseCode();
+
+                // HTTP_OK이면 이메일 사용 가능, HTTP_CONFLICT이면 중복
+                return responseCode == HttpURLConnection.HTTP_OK;
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(Boolean isEmailAvailable) {
+            if (isEmailAvailable) {
+                // 이메일이 사용 가능하면 회원가입 진행
+                new RegisterUserTask().execute(name, email, password, birthdate);
+            } else {
+                // 이메일 중복 경고 메시지 표시
+                Toast.makeText(RegisterActivity.this, "이미 사용 중인 이메일입니다.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     // 사용자 등록을 서버로 제출하는 AsyncTask
     private class RegisterUserTask extends AsyncTask<String, Void, Boolean> {
 
         @Override
         protected Boolean doInBackground(String... params) {
             String name = params[0];
-            String email = params[1]; // 이메일
+            String email = params[1];
             String password = params[2];
-            String birthdate = params[3]; // 생년월일
+            String birthdate = params[3];
 
             try {
                 // 회원가입 데이터를 JSON 객체로 생성
