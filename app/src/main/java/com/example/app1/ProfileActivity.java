@@ -34,7 +34,6 @@ import java.io.IOException;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    private static final int PICK_IMAGE_REQUEST = 1;
     private static final int STORAGE_PERMISSION_CODE = 2;
     private static final String USER_API_URL = "http://1.237.179.199:8080/api/users";
 
@@ -55,9 +54,6 @@ public class ProfileActivity extends AppCompatActivity {
         ImageButton backButton = findViewById(R.id.back_btn);
         backButton.setOnClickListener(view -> finish());
 
-        // 프로필 이미지 초기화
-        profileImageView = findViewById(R.id.imageView3);
-        loadProfileImage();
 
         // 이름 초기화
         nameTextView = findViewById(R.id.nameTextView);
@@ -69,9 +65,7 @@ public class ProfileActivity extends AppCompatActivity {
         // 사용자 정보 가져오기
         new FetchUserTask().execute(userId);
 
-        // 프로필 사진 변경 클릭 이벤트
-        LinearLayout changeProfileImageLayout = findViewById(R.id.change_profile_image_layout);
-        changeProfileImageLayout.setOnClickListener(view -> openGallery());
+
 
         // 이름 변경 클릭 이벤트
         LinearLayout changeNicknameLayout = findViewById(R.id.change_nickname_layout);
@@ -89,21 +83,6 @@ public class ProfileActivity extends AppCompatActivity {
         deleteAccountLayout.setOnClickListener(view -> showDeleteAccountDialog());
         // 저장소 권한 요청
         requestStoragePermission();
-    }
-
-    private void loadProfileImage() {
-        String profilePictureUri = sharedPreferences.getString("profilePictureUri", null);
-        if (profilePictureUri != null) {
-            Uri imageUri = Uri.parse(profilePictureUri);
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                profileImageView.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            profileImageView.setImageResource(R.drawable.plogo); // 기본 이미지 변경
-        }
     }
 
 
@@ -135,31 +114,7 @@ public class ProfileActivity extends AppCompatActivity {
         builder.show();
     }
 
-    private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        intent.setType("image/*");
-        startActivityForResult(intent, PICK_IMAGE_REQUEST);
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri imageUri = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-                profileImageView.setImageBitmap(bitmap);
-
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("profilePictureUri", imageUri.toString());
-                editor.apply();
-            } catch (IOException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "이미지를 불러오는 중 오류가 발생했습니다.", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
 
     private class FetchUserTask extends AsyncTask<Integer, Void, JSONObject> {
         @Override

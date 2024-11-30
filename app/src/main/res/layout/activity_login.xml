@@ -9,10 +9,11 @@
     android:background="#FFFFFF">
 
     <!-- 로고 이미지 추가 -->
+
     <ImageView
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@drawable/plogo"/>
+        android:src="@drawable/plogo" />
 
     <TextView
         android:layout_width="wrap_content"
