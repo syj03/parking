@@ -24,10 +24,10 @@
 
             <com.naver.maps.map.widget.CompassView
                 android:id="@+id/compass_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_gravity="center|left"
-                android:padding="10dp" />
+                android:layout_marginLeft="20dp" />
 
             <!-- 검색바를 지도 위에 겹쳐서 배치 -->
             <LinearLayout

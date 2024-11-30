@@ -100,9 +100,10 @@ public class ProfileActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         } else {
-            profileImageView.setImageResource(R.drawable.profilepicture);
+            profileImageView.setImageResource(R.drawable.plogo); // 기본 이미지 변경
         }
     }
+
 
     private void requestStoragePermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

@@ -33,7 +33,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
-
+    // 사용자 위치
+    private LatLng userLocation = new LatLng(37.181730, 128.196518); // 초기 사용자 위치 설정
     private MapView mapView;
     private NaverMap naverMap;
 
@@ -135,21 +136,22 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         searchLayoutBtn.setOnClickListener(listener);
     }
 
-
     @Override
     public void onMapReady(@NonNull NaverMap naverMap) {
         this.naverMap = naverMap;
+
+        // 나침반과 확대/축소 버튼 비활성화
+        naverMap.getUiSettings().setCompassEnabled(true); // 나침반 비활성화
+        naverMap.getUiSettings().setZoomControlEnabled(false); // 확대/축소 버튼 비활성화
 
         // 초기 위치 설정 (예: 충북 제천시)
         LatLng initialLocation = new LatLng(37.1418, 128.1937);
         CameraUpdate cameraUpdate = CameraUpdate.scrollTo(initialLocation);
         naverMap.moveCamera(cameraUpdate);
-
-        naverMap.setLocationTrackingMode(LocationTrackingMode.Follow);
-
         // 주차장 데이터를 API로 불러오기
         new FetchParkingLotsTask().execute();
     }
+
 
     // NaverGeocodingTask 클래스 추가
     private class NaverGeocodingTask extends AsyncTask<String, Void, LatLng> {
